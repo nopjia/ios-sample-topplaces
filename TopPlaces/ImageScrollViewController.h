@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ImageScrollViewController : UIViewController
-@property (nonatomic, strong) NSURL *imageUrl;
+@property (nonatomic, retain) NSURL *imageUrl;
 @end

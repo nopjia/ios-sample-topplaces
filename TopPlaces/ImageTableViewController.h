@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ImageTableViewController : UITableViewController
-@property (nonatomic, strong) NSArray *images;
+@property (nonatomic, retain) NSArray *images;
 @end

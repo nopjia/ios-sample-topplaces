@@ -11,7 +11,7 @@
 #import "ImageTableViewController.h"
 
 @interface TopTableViewController()
-@property (nonatomic, strong) NSArray *topPlaces;
+@property (nonatomic, retain) NSArray *topPlaces;
 @property (nonatomic) int selectedRow;
 @end
 
@@ -21,7 +21,7 @@
 
 - (NSArray *) topPlaces {
     if (!_topPlaces) {
-        _topPlaces = [[FlickrFetcher topPlaces] copy];
+        _topPlaces = [[FlickrFetcher topPlaces] retain];
         NSLog(@"%i Top Places loaded", _topPlaces.count);
     }
     return _topPlaces;
@@ -58,7 +58,7 @@
     static NSString *CellIdentifier = @"Place Cell";    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
     // Configure the cell...
@@ -79,13 +79,18 @@
     NSRange range = [fullname rangeOfString:@","];
     NSString *title = [fullname substringToIndex:range.location];
     
-    ImageTableViewController *detailVC = [[ImageTableViewController alloc] init];
+    ImageTableViewController *detailVC = [[[ImageTableViewController alloc] init] autorelease];
     [detailVC setTitle:title];
     [detailVC setImages: [FlickrFetcher photosInPlace:self.topPlaces[indexPath.row] maxResults:20]];
-
+        
     [self.navigationController pushViewController:detailVC animated:YES];
 
     NSLog(@"go to %@", title);
+}
+
+- (void)dealloc {
+    [_topPlaces release], _topPlaces = nil;
+    [super dealloc];
 }
 
 @end

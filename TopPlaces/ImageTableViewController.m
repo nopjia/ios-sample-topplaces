@@ -20,7 +20,7 @@
 
 - (void)setImages:(NSArray *)images {
     if (_images != images) {
-        _images = images; // need copy?
+        _images = [images retain];
         [self.tableView reloadData];
     }
 }
@@ -73,7 +73,7 @@
     static NSString *CellIdentifier = @"Image Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
     
     NSDictionary *current = self.images[indexPath.row];
@@ -101,24 +101,33 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *loadedrecents = [defaults objectForKey:DEFAULTS_RECENT_PHOTOS];
     NSMutableArray *recents;
+    
+    // does default key exist?
     if (loadedrecents) {
         recents = [NSMutableArray arrayWithArray:loadedrecents];
     } else {
-        recents = [[NSMutableArray alloc] init];
+        recents = [[[NSMutableArray alloc] init] autorelease];
     }
+    
+    // unique?
     if (![recents containsObject:selected]) {
         [recents addObject:selected];
         [defaults setObject:recents forKey:DEFAULTS_RECENT_PHOTOS];
     }
     
     // setup view
-    ImageScrollViewController *vc = [[ImageScrollViewController alloc] init];
+    ImageScrollViewController *vc = [[[ImageScrollViewController alloc] init] autorelease];
     [vc setTitle:[selected objectForKey:FLICKR_PHOTO_TITLE]];
     vc.imageUrl = [FlickrFetcher urlForPhoto:selected
                                       format:FlickrPhotoFormatLarge];
     
     // go to view
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)dealloc {
+    [_images release], _images = nil;
+    [super dealloc];
 }
 
 @end

@@ -9,8 +9,8 @@
 #import "ImageScrollViewController.h"
 
 @interface ImageScrollViewController() <UIScrollViewDelegate>
-@property (strong, nonatomic) UIScrollView *scrollView;
-@property (strong, nonatomic) UIImageView *imageView;
+@property (nonatomic, retain) UIScrollView *scrollView;
+@property (nonatomic, retain) UIImageView *imageView;
 @end
 
 @implementation ImageScrollViewController
@@ -27,11 +27,11 @@
     [super viewDidLoad];
     
     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.imageUrl]];
-    self.imageView = [[UIImageView alloc] init];
+    self.imageView = [[[UIImageView alloc] init] autorelease];
     self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
     [self.imageView setImage:image];
     
-    self.scrollView = [[UIScrollView alloc] init];
+    self.scrollView = [[[UIScrollView alloc] init] autorelease];
     self.scrollView.delegate = self;
     self.scrollView.contentSize = self.imageView.image.size;
     self.scrollView.minimumZoomScale = 0.1;
@@ -52,6 +52,22 @@
     [self setImageView:nil];
     [self setScrollView:nil];
     [super viewDidUnload];
+}
+
+- (void)dealloc {
+    if (_imageView != nil) {
+        [_imageView release];
+        _imageView = nil;
+    }
+    if (_scrollView != nil) {
+        [_scrollView release];
+        _scrollView = nil;
+    }
+    if (_imageUrl != nil) {
+        [_imageUrl release];
+        _imageUrl = nil;
+    }
+    [super dealloc];
 }
 
 @end
