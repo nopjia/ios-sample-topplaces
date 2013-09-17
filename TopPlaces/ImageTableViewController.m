@@ -19,7 +19,7 @@
 
 - (void)setImages:(NSArray *)images {
     if (_images != images) {
-        _images = [images copy];
+        _images = images; // need copy?
         [self.tableView reloadData];
     }
 }
@@ -34,6 +34,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"Loaded \"%@\"", self.title);
+    
+    if ([self.title isEqual:@"Recents"]) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSArray *recents = [defaults objectForKey:@"TopPlacesViewController.Recents"];
+        if (recents) {
+            self.images = recents; // need copy?
+            NSLog(@"%i Recent Photos loaded", recents.count);
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,6 +69,13 @@
     
     // Configure the cell...
     cell.textLabel.text = [self.images[indexPath.row] objectForKey:FLICKR_PHOTO_TITLE];
+    if (cell.textLabel.text.length <= 0) {
+        cell.textLabel.text = @"Unknown";
+    }
+    cell.detailTextLabel.text = [self.images[indexPath.row] objectForKey:FLICKR_PHOTO_DESCRIPTION];
+    if (cell.detailTextLabel.text.length <= 0) {
+        cell.detailTextLabel.text = [self.images[indexPath.row] objectForKey:FLICKR_PHOTO_OWNER];
+    }
     
     return cell;
 }
