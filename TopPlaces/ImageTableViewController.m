@@ -80,7 +80,7 @@
     if (cell.textLabel.text.length <= 0) {
         cell.textLabel.text = @"Unknown";
     }
-    cell.detailTextLabel.text = [self.images[indexPath.row] objectForKey:FLICKR_PHOTO_DESCRIPTION];
+    cell.detailTextLabel.text = [self.images[indexPath.row] valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
     if (cell.detailTextLabel.text.length <= 0) {
         cell.detailTextLabel.text = [self.images[indexPath.row] objectForKey:FLICKR_PHOTO_OWNER];
     }
@@ -103,6 +103,31 @@
     }
     [recents addObject:self.images[indexPath.row]];
     [defaults setObject:recents forKey:DEFAULTS_RECENT_PHOTOS];
+    
+    // setup view
+    NSDictionary *selected = self.images[indexPath.row];
+    
+    UIViewController *vc = [[UIViewController alloc] init];
+    [vc setTitle:[selected objectForKey:FLICKR_PHOTO_TITLE]];
+    
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    
+    NSURL *imageUrl = [FlickrFetcher urlForPhoto:selected
+                                             format:FlickrPhotoFormatLarge];    
+    UIImage *image = [UIImage imageWithData:
+                      [NSData dataWithContentsOfURL:imageUrl]];
+    
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+    [imageView setImage:image];
+    scrollView.contentSize = CGSizeMake(image.size.width,image.size.height);
+    scrollView.minimumZoomScale = 0.5;
+    scrollView.maximumZoomScale = 2.0;
+    [scrollView addSubview:imageView];
+    [vc.view addSubview:scrollView];
+    
+    // go to view
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
