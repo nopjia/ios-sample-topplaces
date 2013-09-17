@@ -33,9 +33,14 @@
     self.imageView = [[UIImageView alloc] init];
     self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
     [self.imageView setImage:image];
-    self.scrollView.contentSize = self.imageView.image.size;
-    self.scrollView.minimumZoomScale = 0.5;
-    self.scrollView.maximumZoomScale = 2.0;
+    
+    self.scrollView.contentSize = self.view.frame.size;
+    self.scrollView.minimumZoomScale = 0.1;
+    self.scrollView.maximumZoomScale = 4.0;
+    
+    // set appropriate zoom
+    [self.scrollView zoomToRect:self.imageView.frame animated:NO];
+    
     [self.scrollView addSubview:self.imageView];
     [self.view addSubview:self.scrollView];
 }
