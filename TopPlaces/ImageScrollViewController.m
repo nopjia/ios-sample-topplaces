@@ -15,6 +15,8 @@
 
 @implementation ImageScrollViewController
 
+@synthesize scrollView = _scrollView;
+@synthesize imageView = _imageView;
 @synthesize imageUrl = _imageUrl;
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
@@ -24,25 +26,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    self.scrollView.delegate = self;
-    
-    UIImage *image = [UIImage imageWithData:
-                      [NSData dataWithContentsOfURL:self.imageUrl]];
-    
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.imageUrl]];
     self.imageView = [[UIImageView alloc] init];
     self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
     [self.imageView setImage:image];
     
-    self.scrollView.contentSize = self.view.frame.size;
+    self.scrollView = [[UIScrollView alloc] init];
+    self.scrollView.delegate = self;
+    self.scrollView.contentSize = self.imageView.image.size;
     self.scrollView.minimumZoomScale = 0.1;
     self.scrollView.maximumZoomScale = 4.0;
-    
-    // set appropriate zoom
-    [self.scrollView zoomToRect:self.imageView.frame animated:NO];
+    [self.scrollView setBackgroundColor:[UIColor blackColor]];  // set to activate whole area
     
     [self.scrollView addSubview:self.imageView];
     [self.view addSubview:self.scrollView];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    // set size to final frame size
+    self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    [self.scrollView zoomToRect:self.imageView.frame animated:NO];
 }
 
 - (void)viewDidUnload {
