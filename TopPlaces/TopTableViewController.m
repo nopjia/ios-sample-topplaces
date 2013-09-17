@@ -76,34 +76,17 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSString *fullname = [self.topPlaces[indexPath.row] objectForKey:FLICKR_PLACE_NAME];
-//    NSRange range = [fullname rangeOfString:@","];
-//    NSString *title = [fullname substringToIndex:range.location];
+    NSString *fullname = [self.topPlaces[indexPath.row] objectForKey:FLICKR_PLACE_NAME];
+    NSRange range = [fullname rangeOfString:@","];
+    NSString *title = [fullname substringToIndex:range.location];
     
-//    ImageTableViewController *detailVC = [[ImageTableViewController alloc] init];
-//    [detailVC setTitle:title];
-//    [detailVC setImages: [FlickrFetcher photosInPlace:self.topPlaces[indexPath.row] maxResults:5]];
+    ImageTableViewController *detailVC = [[ImageTableViewController alloc] init];
+    [detailVC setTitle:title];
+    [detailVC setImages: [FlickrFetcher photosInPlace:self.topPlaces[indexPath.row] maxResults:20]];
 
-//    [self.navigationController pushViewController:detailVC animated:YES];
+    [self.navigationController pushViewController:detailVC animated:YES];
 
-//    NSLog(@"go to %@", title);
-    
-    self.selectedRow = indexPath.row;
-    
-    [self performSegueWithIdentifier:@"Show Image Table" sender:self];
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"Show Image Table"]) {
-        
-        NSString *fullname = [self.topPlaces[self.selectedRow] objectForKey:FLICKR_PLACE_NAME];
-        NSRange range = [fullname rangeOfString:@","];
-        NSString *title = [fullname substringToIndex:range.location];
-        
-        [segue.destinationViewController setTitle:title];
-        [segue.destinationViewController setImages:
-         [FlickrFetcher photosInPlace:self.topPlaces[self.selectedRow] maxResults:20]];
-    }
+    NSLog(@"go to %@", title);
 }
 
 @end

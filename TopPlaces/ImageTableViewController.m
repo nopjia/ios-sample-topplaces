@@ -32,17 +32,25 @@
     return self;
 }
 
+#define DEFAULTS_RECENT_PHOTOS @"TopPlaces.RecentPhotos"
+
+- (void)loadRecents {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *recents = [defaults objectForKey:DEFAULTS_RECENT_PHOTOS];
+    if (recents) {
+        self.images = recents; // need copy?
+        NSLog(@"%i Recent Photos loaded", recents.count);
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"Loaded \"%@\"", self.title);
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
     if ([self.title isEqual:@"Recents"]) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSArray *recents = [defaults objectForKey:@"TopPlacesViewController.Recents"];
-        if (recents) {
-            self.images = recents; // need copy?
-            NSLog(@"%i Recent Photos loaded", recents.count);
-        }
+        [self loadRecents];
     }
 }
 
@@ -64,7 +72,7 @@
     static NSString *CellIdentifier = @"Image Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
     // Configure the cell...
@@ -83,13 +91,18 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    
+    // save to user defaults
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *loadedrecents = [defaults objectForKey:DEFAULTS_RECENT_PHOTOS];
+    NSMutableArray *recents;
+    if (loadedrecents) {
+        recents = [NSMutableArray arrayWithArray:loadedrecents];
+    } else {
+        recents = [[NSMutableArray alloc] init];
+    }
+    [recents addObject:self.images[indexPath.row]];
+    [defaults setObject:recents forKey:DEFAULTS_RECENT_PHOTOS];
 }
 
 @end
