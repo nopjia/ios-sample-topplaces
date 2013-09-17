@@ -1,5 +1,5 @@
 //
-//  TopPlacesViewController.h
+//  ImageTableViewController.h
 //  TopPlaces
 //
 //  Created by Nop Jiarathanakul on 9/16/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TopPlacesViewController : UITabBarController
-
+@interface ImageTableViewController : UITableViewController
+@property (nonatomic, strong) NSArray *images;
 @end

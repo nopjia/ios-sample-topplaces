@@ -7,7 +7,6 @@
 //
 
 #import "TopPlacesViewController.h"
-#import "FlickrFetcher.h"
 
 @interface TopPlacesViewController ()
 
@@ -17,7 +16,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"%@", [FlickrFetcher topPlaces]);
+    self.title = @"Top Places";
+    NSLog(@"TopPlacesViewController Loaded");
 }
 
 - (void)didReceiveMemoryWarning {

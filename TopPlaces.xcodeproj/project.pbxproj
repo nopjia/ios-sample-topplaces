@@ -20,6 +20,9 @@
 		30F9FE7817E7B89000E6852B /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30F9FE7617E7B89000E6852B /* iPad.storyboard */; };
 		30F9FE7B17E7B89000E6852B /* TopPlacesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F9FE7A17E7B89000E6852B /* TopPlacesViewController.m */; };
 		30F9FE8417E7B95700E6852B /* FlickrFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F9FE8317E7B95700E6852B /* FlickrFetcher.m */; };
+		30F9FE8717E7BD8E00E6852B /* TopTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F9FE8617E7BD8E00E6852B /* TopTableViewController.m */; };
+		30F9FEC317E7DA3000E6852B /* RecentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F9FEC217E7DA3000E6852B /* RecentTableViewController.m */; };
+		30F9FEC617E7E44B00E6852B /* ImageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F9FEC517E7E44B00E6852B /* ImageTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +46,12 @@
 		30F9FE8117E7B95700E6852B /* FlickrAPIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrAPIKey.h; sourceTree = "<group>"; };
 		30F9FE8217E7B95700E6852B /* FlickrFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrFetcher.h; sourceTree = "<group>"; };
 		30F9FE8317E7B95700E6852B /* FlickrFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrFetcher.m; sourceTree = "<group>"; };
+		30F9FE8517E7BD8E00E6852B /* TopTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopTableViewController.h; sourceTree = "<group>"; };
+		30F9FE8617E7BD8E00E6852B /* TopTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopTableViewController.m; sourceTree = "<group>"; };
+		30F9FEC117E7DA3000E6852B /* RecentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewController.h; sourceTree = "<group>"; };
+		30F9FEC217E7DA3000E6852B /* RecentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewController.m; sourceTree = "<group>"; };
+		30F9FEC417E7E44B00E6852B /* ImageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageTableViewController.h; sourceTree = "<group>"; };
+		30F9FEC517E7E44B00E6852B /* ImageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +107,12 @@
 				30F9FE7617E7B89000E6852B /* iPad.storyboard */,
 				30F9FE7917E7B89000E6852B /* TopPlacesViewController.h */,
 				30F9FE7A17E7B89000E6852B /* TopPlacesViewController.m */,
+				30F9FEC117E7DA3000E6852B /* RecentTableViewController.h */,
+				30F9FEC217E7DA3000E6852B /* RecentTableViewController.m */,
+				30F9FE8517E7BD8E00E6852B /* TopTableViewController.h */,
+				30F9FE8617E7BD8E00E6852B /* TopTableViewController.m */,
+				30F9FEC417E7E44B00E6852B /* ImageTableViewController.h */,
+				30F9FEC517E7E44B00E6852B /* ImageTableViewController.m */,
 				30F9FE6217E7B88F00E6852B /* Supporting Files */,
 			);
 			path = TopPlaces;
@@ -189,6 +204,9 @@
 				30F9FE6C17E7B88F00E6852B /* TopPlacesAppDelegate.m in Sources */,
 				30F9FE7B17E7B89000E6852B /* TopPlacesViewController.m in Sources */,
 				30F9FE8417E7B95700E6852B /* FlickrFetcher.m in Sources */,
+				30F9FE8717E7BD8E00E6852B /* TopTableViewController.m in Sources */,
+				30F9FEC317E7DA3000E6852B /* RecentTableViewController.m in Sources */,
+				30F9FEC617E7E44B00E6852B /* ImageTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +339,7 @@
 				30F9FE8017E7B89000E6852B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

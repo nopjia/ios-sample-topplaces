@@ -1,5 +1,5 @@
 //
-//  TopPlacesViewController.h
+//  TopTableViewController.h
 //  TopPlaces
 //
 //  Created by Nop Jiarathanakul on 9/16/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TopPlacesViewController : UITabBarController
+@interface TopTableViewController : UITableViewController
 
 @end
