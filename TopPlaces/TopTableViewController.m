@@ -22,7 +22,6 @@
 - (NSArray *) topPlaces {
     if (!_topPlaces) {
         _topPlaces = [[FlickrFetcher topPlaces] copy];
-        NSLog(@"%@", _topPlaces);
         NSLog(@"%i Top Places loaded", _topPlaces.count);
     }
     return _topPlaces;

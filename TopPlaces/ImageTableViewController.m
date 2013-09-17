@@ -39,7 +39,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *recents = [defaults objectForKey:DEFAULTS_RECENT_PHOTOS];
     if (recents) {
-        self.images = recents; // need copy?
+        self.images = [[recents reverseObjectEnumerator] allObjects]; // copy the reverse
         NSLog(@"%i Recent Photos loaded", recents.count);
     }
 }
@@ -76,14 +76,16 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
+    NSDictionary *current = self.images[indexPath.row];
+    
     // Configure the cell...
-    cell.textLabel.text = [self.images[indexPath.row] objectForKey:FLICKR_PHOTO_TITLE];
+    cell.textLabel.text = [current objectForKey:FLICKR_PHOTO_TITLE];
     if (cell.textLabel.text.length <= 0) {
         cell.textLabel.text = @"Unknown";
     }
-    cell.detailTextLabel.text = [self.images[indexPath.row] valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
+    cell.detailTextLabel.text = [current valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
     if (cell.detailTextLabel.text.length <= 0) {
-        cell.detailTextLabel.text = [self.images[indexPath.row] objectForKey:FLICKR_PHOTO_OWNER];
+        cell.detailTextLabel.text = [current objectForKey:FLICKR_PHOTO_OWNER];
     }
     
     return cell;
@@ -92,6 +94,8 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSDictionary *selected = self.images[indexPath.row];
     
     // save to user defaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -102,11 +106,12 @@
     } else {
         recents = [[NSMutableArray alloc] init];
     }
-    [recents addObject:self.images[indexPath.row]];
-    [defaults setObject:recents forKey:DEFAULTS_RECENT_PHOTOS];
+    if (![recents containsObject:selected]) {
+        [recents addObject:selected];
+        [defaults setObject:recents forKey:DEFAULTS_RECENT_PHOTOS];
+    }
     
     // setup view
-    NSDictionary *selected = self.images[indexPath.row];
     ImageScrollViewController *vc = [[ImageScrollViewController alloc] init];
     [vc setTitle:[selected objectForKey:FLICKR_PHOTO_TITLE]];
     vc.imageUrl = [FlickrFetcher urlForPhoto:selected
