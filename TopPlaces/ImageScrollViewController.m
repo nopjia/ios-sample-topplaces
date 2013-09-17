@@ -48,25 +48,10 @@
     [self.scrollView zoomToRect:self.imageView.frame animated:NO];
 }
 
-- (void)viewDidUnload {
-    [self setImageView:nil];
-    [self setScrollView:nil];
-    [super viewDidUnload];
-}
-
 - (void)dealloc {
-    if (_imageView != nil) {
-        [_imageView release];
-        _imageView = nil;
-    }
-    if (_scrollView != nil) {
-        [_scrollView release];
-        _scrollView = nil;
-    }
-    if (_imageUrl != nil) {
-        [_imageUrl release];
-        _imageUrl = nil;
-    }
+    [_imageView release], _imageView = nil;
+    [_scrollView release], _scrollView = nil;
+    [_imageUrl release], _imageUrl = nil;
     [super dealloc];
 }
 

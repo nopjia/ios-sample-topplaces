@@ -21,7 +21,7 @@
 
 - (NSArray *) topPlaces {
     if (!_topPlaces) {
-        _topPlaces = [[FlickrFetcher topPlaces] retain];
+        _topPlaces = [[FlickrFetcher topPlaces] retain];  // lazy init
         NSLog(@"%i Top Places loaded", _topPlaces.count);
     }
     return _topPlaces;
@@ -55,13 +55,14 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Place Cell";    
+    // get cell
+    static NSString *CellIdentifier = @"Place Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    // Configure the cell...
+    // configure cell
     NSString *fullname = [self.topPlaces[indexPath.row] objectForKey:FLICKR_PLACE_NAME];
     NSRange range = [fullname rangeOfString:@","];
     NSString *title = [fullname substringToIndex:range.location];

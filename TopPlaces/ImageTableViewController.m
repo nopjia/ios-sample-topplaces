@@ -20,7 +20,8 @@
 
 - (void)setImages:(NSArray *)images {
     if (_images != images) {
-        _images = [images retain];
+        [_images release];  // release old one
+        _images = [images retain];  // retain new one
         [self.tableView reloadData];
     }
 }
@@ -70,15 +71,15 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // get cell
     static NSString *CellIdentifier = @"Image Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
     
+    // configure the cell...
     NSDictionary *current = self.images[indexPath.row];
-    
-    // Configure the cell...
     cell.textLabel.text = [current objectForKey:FLICKR_PHOTO_TITLE];
     if (cell.textLabel.text.length <= 0) {
         cell.textLabel.text = @"Unknown";
