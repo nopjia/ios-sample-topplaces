@@ -8,6 +8,7 @@
 
 #import "ImageTableViewController.h"
 #import "FlickrFetcher.h"
+#import "ImageScrollViewController.h"
 
 @interface ImageTableViewController()
 
@@ -106,25 +107,10 @@
     
     // setup view
     NSDictionary *selected = self.images[indexPath.row];
-    
-    UIViewController *vc = [[UIViewController alloc] init];
+    ImageScrollViewController *vc = [[ImageScrollViewController alloc] init];
     [vc setTitle:[selected objectForKey:FLICKR_PHOTO_TITLE]];
-    
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    
-    NSURL *imageUrl = [FlickrFetcher urlForPhoto:selected
-                                             format:FlickrPhotoFormatLarge];    
-    UIImage *image = [UIImage imageWithData:
-                      [NSData dataWithContentsOfURL:imageUrl]];
-    
-    UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-    [imageView setImage:image];
-    scrollView.contentSize = CGSizeMake(image.size.width,image.size.height);
-    scrollView.minimumZoomScale = 0.5;
-    scrollView.maximumZoomScale = 2.0;
-    [scrollView addSubview:imageView];
-    [vc.view addSubview:scrollView];
+    vc.imageUrl = [FlickrFetcher urlForPhoto:selected
+                                      format:FlickrPhotoFormatLarge];
     
     // go to view
     [self.navigationController pushViewController:vc animated:YES];
