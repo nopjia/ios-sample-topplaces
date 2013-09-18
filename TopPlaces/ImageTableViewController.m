@@ -18,14 +18,6 @@
 
 @synthesize images = _images;
 
-- (void)setImages:(NSArray *)images {
-    if (_images != images) {
-        [_images release];  // release old one
-        _images = [images retain];  // retain new one
-        [self.tableView reloadData];
-    }
-}
-
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {

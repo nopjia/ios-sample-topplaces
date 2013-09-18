@@ -19,14 +19,6 @@
 
 @synthesize topPlaces = _topPlaces;
 
-- (NSArray *) topPlaces {
-    if (!_topPlaces) {
-        _topPlaces = [[FlickrFetcher topPlaces] retain];  // lazy init
-        NSLog(@"%i Top Places loaded", _topPlaces.count);
-    }
-    return _topPlaces;
-}
-
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
@@ -38,6 +30,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Top Places";
+    
+    dispatch_queue_t downloadQueue = dispatch_queue_create("flickr download", NULL);
+    dispatch_async(downloadQueue, ^{
+        self.topPlaces = [FlickrFetcher topPlaces];
+        NSLog(@"%i Top Places loaded", self.topPlaces.count);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];  // ui calls to main queue
+        });
+    });
+    dispatch_release(downloadQueue);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,14 +78,26 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *fullname = [self.topPlaces[indexPath.row] objectForKey:FLICKR_PLACE_NAME];
+    NSDictionary *selected = self.topPlaces[indexPath.row];
+    
+    NSString *fullname = [selected objectForKey:FLICKR_PLACE_NAME];
     NSRange range = [fullname rangeOfString:@","];
     NSString *title = [fullname substringToIndex:range.location];
     
     ImageTableViewController *detailVC = [[[ImageTableViewController alloc] init] autorelease];
     [detailVC setTitle:title];
-    [detailVC setImages: [FlickrFetcher photosInPlace:self.topPlaces[indexPath.row] maxResults:20]];
-        
+    
+    // flickr download
+    dispatch_queue_t downloadQueue = dispatch_queue_create("flickr download", NULL);
+    dispatch_async(downloadQueue, ^{
+        [detailVC setImages: [FlickrFetcher photosInPlace:selected maxResults:20]];
+        NSLog(@"%@ %i images loaded", title, detailVC.images.count);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [detailVC.tableView reloadData];  // ui update in main queue
+        });
+    });
+    dispatch_release(downloadQueue);
+    
     [self.navigationController pushViewController:detailVC animated:YES];
 
     NSLog(@"go to %@", title);
