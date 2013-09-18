@@ -20,8 +20,4 @@
     NSLog(@"TopPlacesViewController Loaded");
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
 @end

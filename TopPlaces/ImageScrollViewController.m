@@ -43,6 +43,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     // set size to final frame size
     self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [self.scrollView zoomToRect:self.imageView.frame animated:NO];
